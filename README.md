@@ -1,4 +1,4 @@
-# KRI IP HTTPS
+# Root IP HTTPS
 
 在 **Ubuntu 22.04 / 24.04 LTS** 的新 VPS 上，一键安装 Nginx 与 Certbot，免费签发 **Let's Encrypt 公网 IPv4 HTTPS 证书**，配置自动续签。**不会生成或覆盖 `/etc/nginx/conf.d/site1.conf`**，业务反代由你自己配置。
 
@@ -7,8 +7,8 @@
 ## 快速开始
 
 ```bash
-git clone https://github.com/<你的用户名>/kri-ip-https.git
-cd kri-ip-https
+git clone https://github.com/<你的用户名>/Root-ip-https.git
+cd Root-ip-https
 sudo bash install.sh
 ```
 
