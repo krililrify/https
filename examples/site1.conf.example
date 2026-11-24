@@ -1,0 +1,39 @@
+# Replace: __PUBLIC_IP__, __UPSTREAM_HOST__, __PREFIX__
+# Copy to: /etc/nginx/conf.d/site1.conf
+server {
+    listen 18484 ssl;
+    server_name __PUBLIC_IP__;
+
+    ssl_certificate /etc/letsencrypt/live/__PUBLIC_IP__/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/__PUBLIC_IP__/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+
+    location / { return 404; }
+
+    location = /__PREFIX__ {
+        proxy_pass https://__UPSTREAM_HOST__;
+        proxy_ssl_server_name on;
+        proxy_ssl_name __UPSTREAM_HOST__;
+        proxy_ssl_verify on;
+        proxy_ssl_trusted_certificate /etc/ssl/certs/ca-certificates.crt;
+        proxy_ssl_verify_depth 5;
+        proxy_set_header Host __UPSTREAM_HOST__;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+    location ^~ /__PREFIX__/ {
+        proxy_pass https://__UPSTREAM_HOST__;
+        proxy_ssl_server_name on;
+        proxy_ssl_name __UPSTREAM_HOST__;
+        proxy_ssl_verify on;
+        proxy_ssl_trusted_certificate /etc/ssl/certs/ca-certificates.crt;
+        proxy_ssl_verify_depth 5;
+        proxy_set_header Host __UPSTREAM_HOST__;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_connect_timeout 10s;
+        proxy_read_timeout 30s;
+        proxy_send_timeout 30s;
+    }
+}
